@@ -128,3 +128,89 @@ O Vue também fornece a `v-model`diretiva que torna a ligação bidirecional en
   }
 }
 Vue.createApp(TwoWayBinding).mount('#two-way-binding')`
+                                                                                            
+                                                                                            Manipulação de entrada do usuário
+Para permitir que os usuários interajam com seu aplicativo, podemos usar a v-ondiretiva para anexar ouvintes de eventos que invocam métodos em nossas instâncias:
+
+<div id="event-handling">
+  <p>{{ message }}</p>
+  <button v-on:click="reverseMessage">Reverse Message</button>
+</div>
+const EventHandling = {
+  data() {
+    return {
+      message: 'Hello Vue.js!'
+    }
+  },
+  methods: {
+    reverseMessage() {
+      this.message = this.message
+        .split('')
+        .reverse()
+        .join('')
+    }
+  }
+}
+
+Vue.createApp(EventHandling).mount('#event-handling')
+
+Observe que, neste método, atualizamos o estado de nosso aplicativo sem tocar no DOM - todas as manipulações do DOM são tratadas pelo Vue, e o código que você escreve é ​​focado na lógica subjacente.
+
+O Vue também fornece a v-modeldiretiva que torna a ligação bidirecional entre a entrada do formulário e o estado do aplicativo uma brisa:
+
+<div id="two-way-binding">
+  <p>{{ message }}</p>
+  <input v-model="message" />
+</div>
+const TwoWayBinding = {
+  data() {
+    return {
+      message: 'Hello Vue!'
+    }
+  }
+}
+
+Vue.createApp(TwoWayBinding).mount('#two-way-binding')
+
+#Condicionais e Loops
+Também é fácil alternar a presença de um elemento:
+
+<div id="conditional-rendering">
+  <span v-if="seen">Now you see me</span>
+</div>
+const ConditionalRendering = {
+  data() {
+    return {
+      seen: true
+    }
+  }
+}
+
+Vue.createApp(ConditionalRendering).mount('#conditional-rendering')
+Este exemplo demonstra que podemos vincular dados não apenas a texto e atributos, mas também à estrutura do DOM. Além disso, o Vue também fornece um sistema de efeito de transição poderoso que pode aplicar efeitos de transição automaticamente quando os elementos são inseridos / atualizados / removidos pelo Vue.
+
+Você pode mudar seende truepara falsena caixa de areia abaixo para verificar o efeito:
+
+
+Existem algumas outras diretivas, cada uma com sua funcionalidade especial. Por exemplo, a v-fordiretiva pode ser usada para exibir uma lista de itens usando os dados de uma matriz:
+
+<div id="list-rendering">
+  <ol>
+    <li v-for="todo in todos">
+      {{ todo.text }}
+    </li>
+  </ol>
+</div>
+const ListRendering = {
+  data() {
+    return {
+      todos: [
+        { text: 'Learn JavaScript' },
+        { text: 'Learn Vue' },
+        { text: 'Build something awesome' }
+      ]
+    }
+  }
+}
+
+Vue.createApp(ListRendering).mount('#list-rendering')
