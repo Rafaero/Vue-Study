@@ -214,3 +214,90 @@ const ListRendering = {
 }
 
 Vue.createApp(ListRendering).mount('#list-rendering')
+
+Compondo com componentes
+O sistema de componentes é outro conceito importante no Vue, porque é uma abstração que nos permite construir aplicativos em grande escala compostos de componentes pequenos, independentes e frequentemente reutilizáveis. Se pensarmos bem, quase qualquer tipo de interface de aplicativo pode ser abstraído em uma árvore de componentes:
+
+Árvore de Componentes
+
+No Vue, um componente é essencialmente uma instância com opções predefinidas. Registrar um componente no Vue é simples: criamos um objeto de componente como fizemos com os Appobjetos e o definimos na componentsopção do pai :
+
+// Create Vue application
+const app = Vue.createApp(...)
+
+// Define a new component called todo-item
+app.component('todo-item', {
+  template: `<li>This is a todo</li>`
+})
+
+// Mount Vue application
+app.mount(...)
+Agora você pode compor no modelo de outro componente:
+
+<ol>
+  <!-- Create an instance of the todo-item component -->
+  <todo-item></todo-item>
+</ol>
+Mas isso renderizaria o mesmo texto para todas as tarefas, o que não é muito interessante. Devemos ser capazes de passar dados do escopo pai para os componentes filhos. Vamos modificar a definição do componente para que aceite um prop :
+
+app.component('todo-item', {
+  props: ['todo'],
+  template: `<li>{{ todo.text }}</li>`
+})
+Agora podemos passar a tarefa para cada componente repetido usando v-bind:
+
+<div id="todo-list-app">
+  <ol>
+    <!--
+      Now we provide each todo-item with the todo object
+      it's representing, so that its content can be dynamic.
+      We also need to provide each component with a "key",
+      which will be explained later.
+    -->
+    <todo-item
+      v-for="item in groceryList"
+      v-bind:todo="item"
+      v-bind:key="item.id"
+    ></todo-item>
+  </ol>
+</div>
+const TodoList = {
+  data() {
+    return {
+      groceryList: [
+        { id: 0, text: 'Vegetables' },
+        { id: 1, text: 'Cheese' },
+        { id: 2, text: 'Whatever else humans are supposed to eat' }
+      ]
+    }
+  }
+}
+
+const app = Vue.createApp(TodoList)
+
+app.component('todo-item', {
+  props: ['todo'],
+  template: `<li>{{ todo.text }}</li>`
+})
+
+app.mount('#todo-list-app')
+
+Este é um exemplo artificial, mas conseguimos separar nosso aplicativo em duas unidades menores, e o filho está razoavelmente bem desacoplado do pai por meio da interface de adereços. Agora podemos melhorar ainda mais nosso <todo-item>componente com um modelo e lógica mais complexos sem afetar o aplicativo pai.
+
+Em um aplicativo grande, é necessário dividir todo o aplicativo em componentes para tornar o desenvolvimento gerenciável. Falaremos muito mais sobre os componentes posteriormente neste guia , mas aqui está um exemplo (imaginário) de como o modelo de um aplicativo pode se parecer com os componentes:
+
+<div id="app">
+  <app-nav></app-nav>
+  <app-view>
+    <app-sidebar></app-sidebar>
+    <app-content></app-content>
+  </app-view>
+</div>
+#Relação com elementos personalizados
+Você deve ter notado que os componentes do Vue são muito semelhantes aos elementos personalizados , que fazem parte das especificações dos componentes da Web (abre uma nova janela). Isso ocorre porque a sintaxe do componente do Vue é modelada livremente após a especificação. Por exemplo, os componentes do Vue implementam a API Slot (abre uma nova janela)e o isatributo especial. No entanto, existem algumas diferenças importantes:
+
+As especificações dos componentes da Web foram finalizadas, mas não foram implementadas nativamente em todos os navegadores. Safari 10.1+, Chrome 54+ e Firefox 63+ oferecem suporte nativo a componentes da web. Em comparação, os componentes do Vue funcionam de forma consistente em todos os navegadores suportados (exceto Internet Explorer 11 - verifique os detalhes aqui (abre uma nova janela)) Quando necessário, os componentes do Vue também podem ser agrupados em um elemento personalizado nativo.
+Os componentes do Vue fornecem recursos importantes que não estão disponíveis em elementos personalizados simples, principalmente o fluxo de dados entre componentes, comunicação de eventos personalizados e integrações de ferramentas de construção.
+Embora o Vue não use elementos personalizados internamente, ele tem uma grande interoperabilidade (abre uma nova janela)quando se trata de consumir ou distribuir como elementos personalizados. O Vue CLI também suporta a construção de componentes Vue que se registram como elementos nativos personalizados.
+
+#
