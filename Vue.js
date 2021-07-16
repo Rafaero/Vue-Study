@@ -83,3 +83,48 @@ Vue.createApp(AttributeBinding).mount('#bind-attribute')
 ```
 
 Aqui estamos encontrando algo novo. O `v-bind`atributo que você está vendo é chamado de **diretiva** . As diretivas são prefixadas com `v-`para indicar que são atributos especiais fornecidos pelo Vue e, como você deve ter adivinhado, elas aplicam um comportamento reativo especial ao DOM renderizado. Aqui estamos basicamente dizendo " *mantenha o `title`atributo deste elemento atualizado com a `message`propriedade na instância ativa atual.* "
+
+ ## **Manipulação de entrada do usuário**
+
+Para permitir que os usuários interajam com seu aplicativo, podemos usar a `v-on`diretiva para anexar ouvintes de eventos que invocam métodos em nossas instâncias:
+
+```
+<div id="event-handling"><p>{{ message }}</p><button v-on:click="reverseMessage">Reverse Message</button></div>
+```
+
+```
+const EventHandling = {
+  data() {
+    return {
+      message: 'Hello Vue.js!'
+    }
+  },
+  methods: {
+    reverseMessage() {
+      this.message = this.message
+        .split('')
+        .reverse()
+        .join('')
+    }
+  }
+}
+Vue.createApp(EventHandling).mount('#event-handling')
+
+```
+
+Observe que, neste método, atualizamos o estado de nosso aplicativo sem tocar no DOM - todas as manipulações do DOM são tratadas pelo Vue, e o código que você escreve é focado na lógica subjacente.
+
+O Vue também fornece a `v-model`diretiva que torna a ligação bidirecional entre a entrada do formulário e o estado do aplicativo uma brisa:
+
+```
+<div id="two-way-binding"><p>{{ message }}</p><input v-model="message" /></div>
+```
+
+`const TwoWayBinding = {
+  data() {
+    return {
+      message: 'Hello Vue!'
+    }
+  }
+}
+Vue.createApp(TwoWayBinding).mount('#two-way-binding')`
