@@ -301,3 +301,24 @@ Os componentes do Vue fornecem recursos importantes que não estão disponíveis
 Embora o Vue não use elementos personalizados internamente, ele tem uma grande interoperabilidade (abre uma nova janela)quando se trata de consumir ou distribuir como elementos personalizados. O Vue CLI também suporta a construção de componentes Vue que se registram como elementos nativos personalizados.
 
 #
+
+Instâncias de aplicativos e componentes
+#Criação de uma instância de aplicativo
+Cada aplicativo Vue começa criando uma nova instância de aplicativo com a createAppfunção:
+
+const app = Vue.createApp({
+  /* options */
+})
+A instância do aplicativo é usada para registrar 'globais' que podem então ser usados ​​por componentes dentro desse aplicativo. Discutiremos isso em detalhes posteriormente no guia, mas como um exemplo rápido:
+
+const app = Vue.createApp({})
+app.component('SearchInput', SearchInputComponent)
+app.directive('focus', FocusDirective)
+app.use(LocalePlugin)
+A maioria dos métodos expostos pela instância do aplicativo retorna a mesma instância, permitindo o encadeamento:
+
+Vue.createApp({})
+  .component('SearchInput', SearchInputComponent)
+  .directive('focus', FocusDirective)
+  .use(LocalePlugin)
+Você pode navegar na API completa do aplicativo na referência da API .
