@@ -369,3 +369,23 @@ console.log(vm.count) // => 4
 Existem várias outras opções de componentes que agregam propriedades definidas pelo usuário para a instância do componente, como methods, props, computed, injecte setup. Discutiremos cada um deles em detalhes posteriormente neste guia. Todas as propriedades da instância do componente, não importa como sejam definidas, estarão acessíveis no modelo do componente.
 
 O Vue também expõe algumas propriedades integradas por meio da instância do componente, como $attrse $emit. Todas essas propriedades têm um $prefixo para evitar conflito com nomes de propriedade definidos pelo usuário.
+
+Lifecycle Hooks
+Cada instância do componente passa por uma série de etapas de inicialização quando é criada - por exemplo, ele precisa configurar a observação de dados, compilar o modelo, montar a instância no DOM e atualizar o DOM quando os dados forem alterados. Ao longo do caminho, ele também executa funções chamadas ganchos de ciclo de vida , dando aos usuários a oportunidade de adicionar seu próprio código em estágios específicos.
+
+Por exemplo, o gancho criado pode ser usado para executar o código após a criação de uma instância:
+
+Vue.createApp({
+  data() {
+    return { count: 1 }
+  },
+  created() {
+    // `this` points to the vm instance
+    console.log('count is: ' + this.count) // => "count is: 1"
+  }
+})
+Existem também outros ganchos que serão chamados em diferentes estágios do ciclo de vida da instância, como montado , atualizado e desmontado . Todos os ganchos de ciclo de vida são chamados com seu thiscontexto apontando para a instância ativa atual que o invoca.
+
+GORJETA
+
+Não use funções de seta (abre uma nova janela)em uma propriedade de opções ou retorno de chamada, como created: () => console.log(this.a)ou vm.$watch('a', newValue => this.myMethod()). Como uma função de seta não tem um this, thisserá tratada como qualquer outra variável e lexicalmente pesquisada por meio de escopos pai até ser encontrada, geralmente resultando em erros como Uncaught TypeError: Cannot read property of undefinedou Uncaught TypeError: this.myMethod is not a function.
