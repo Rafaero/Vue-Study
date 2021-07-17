@@ -389,3 +389,8 @@ Existem também outros ganchos que serão chamados em diferentes estágios do ci
 GORJETA
 
 Não use funções de seta (abre uma nova janela)em uma propriedade de opções ou retorno de chamada, como created: () => console.log(this.a)ou vm.$watch('a', newValue => this.myMethod()). Como uma função de seta não tem um this, thisserá tratada como qualquer outra variável e lexicalmente pesquisada por meio de escopos pai até ser encontrada, geralmente resultando em erros como Uncaught TypeError: Cannot read property of undefinedou Uncaught TypeError: this.myMethod is not a function.
+
+Diagrama de Ciclo de Vida
+Abaixo está um diagrama para o ciclo de vida da instância. Você não precisa entender completamente tudo o que está acontecendo agora, mas conforme você aprende e constrói mais, será uma referência útil.
+
+Ganchos de ciclo de vida da instância
