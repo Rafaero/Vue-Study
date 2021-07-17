@@ -424,3 +424,14 @@ O conteúdo do spanserá substituído pelo valor da rawHtmlpropriedade, interpre
 GORJETA
 
 Renderizar HTML arbitrário de forma dinâmica em seu site pode ser muito perigoso porque pode facilmente levar a vulnerabilidades de XSS (abre uma nova janela). Use interpolação HTML apenas em conteúdo confiável e nunca em conteúdo fornecido pelo usuário
+
+Atributos
+Bigodes não podem ser usados ​​em atributos HTML. Em vez disso, use uma v-binddiretiva :
+
+<div v-bind:id="dynamicId"></div>
+Se o valor vinculado for nullou undefined, o atributo não será incluído no elemento renderizado.
+
+No caso de atributos booleanos, onde sua mera existência implica true, v-bindfunciona de maneira um pouco diferente. Por exemplo:
+
+<button v-bind:disabled="isButtonDisabled">Button</button>
+O disabledatributo será incluído se isButtonDisabledtiver um valor verdadeiro. Também será incluído se o valor for uma string vazia, mantendo a consistência com <button disabled="">. Para outros valores falsos, o atributo será omitido.
