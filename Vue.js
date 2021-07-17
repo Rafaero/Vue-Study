@@ -435,3 +435,32 @@ No caso de atributos booleanos, onde sua mera existência implica true, v-bindfu
 
 <button v-bind:disabled="isButtonDisabled">Button</button>
 O disabledatributo será incluído se isButtonDisabledtiver um valor verdadeiro. Também será incluído se o valor for uma string vazia, mantendo a consistência com <button disabled="">. Para outros valores falsos, o atributo será omitido.
+
+Atributos
+Bigodes não podem ser usados ​​em atributos HTML. Em vez disso, use uma v-binddiretiva :
+
+<div v-bind:id="dynamicId"></div>
+Se o valor vinculado for nullou undefined, o atributo não será incluído no elemento renderizado.
+
+No caso de atributos booleanos, onde sua mera existência implica true, v-bindfunciona de maneira um pouco diferente. Por exemplo:
+
+<button v-bind:disabled="isButtonDisabled">Button</button>
+O disabledatributo será incluído se isButtonDisabledtiver um valor verdadeiro. Também será incluído se o valor for uma string vazia, mantendo a consistência com <button disabled="">. Para outros valores falsos, o atributo será omitido.
+
+#Usando expressões JavaScript
+Até agora, estivemos apenas vinculando a chaves de propriedade simples em nossos modelos. Mas Vue.js, na verdade, oferece suporte a todo o poder das expressões JavaScript dentro de todas as vinculações de dados:
+
+{{ number + 1 }}
+
+{{ ok ? 'YES' : 'NO' }}
+
+{{ message.split('').reverse().join('') }}
+
+<div v-bind:id="'list-' + id"></div>
+Essas expressões serão avaliadas como JavaScript no escopo de dados da instância ativa atual. Uma restrição é que cada ligação pode conter apenas uma única expressão , então o seguinte NÃO funcionará:
+
+<!-- this is a statement, not an expression: -->
+{{ var a = 1 }}
+
+<!-- flow control won't work either, use ternary expressions -->
+{{ if (ok) { return message } }}
