@@ -353,3 +353,19 @@ Cada componente terá sua própria instância de componente vm,. Para alguns com
 Falaremos sobre o sistema de componentes em detalhes mais tarde. Por enquanto, apenas esteja ciente de que o componente raiz não é realmente diferente de qualquer outro componente. As opções de configuração são as mesmas, assim como o comportamento da instância do componente correspondente.
 
 #
+
+Propriedades da instância do componente
+No início do guia, encontramos datapropriedades. As propriedades definidas em datasão expostas por meio da instância do componente:
+
+const app = Vue.createApp({
+  data() {
+    return { count: 4 }
+  }
+})
+
+const vm = app.mount('#app')
+
+console.log(vm.count) // => 4
+Existem várias outras opções de componentes que agregam propriedades definidas pelo usuário para a instância do componente, como methods, props, computed, injecte setup. Discutiremos cada um deles em detalhes posteriormente neste guia. Todas as propriedades da instância do componente, não importa como sejam definidas, estarão acessíveis no modelo do componente.
+
+O Vue também expõe algumas propriedades integradas por meio da instância do componente, como $attrse $emit. Todas essas propriedades têm um $prefixo para evitar conflito com nomes de propriedade definidos pelo usuário.
