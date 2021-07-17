@@ -412,3 +412,15 @@ A tag do bigode será substituída pelo valor da msgpropriedade da instância do
 Você também pode realizar interpolações únicas que não são atualizadas na mudança de dados usando a diretiva v-once , mas tenha em mente que isso também afetará quaisquer outras ligações no mesmo nó:
 
 <span v-once>This will never change: {{ msg }}</span>
+
+HTML bruto
+Os bigodes duplos interpretam os dados como texto simples, não HTML. Para gerar HTML real, você precisará usar a v-htmldiretiva :
+
+<p>Using mustaches: {{ rawHtml }}</p>
+<p>Using v-html directive: <span v-html="rawHtml"></span></p>
+
+O conteúdo do spanserá substituído pelo valor da rawHtmlpropriedade, interpretado como HTML simples - as ligações de dados são ignoradas. Observe que você não pode usar v-htmlpara compor parciais de modelo, porque o Vue não é um mecanismo de modelagem baseado em string. Em vez disso, os componentes são preferidos como a unidade fundamental para a reutilização e composição da IU.
+
+GORJETA
+
+Renderizar HTML arbitrário de forma dinâmica em seu site pode ser muito perigoso porque pode facilmente levar a vulnerabilidades de XSS (abre uma nova janela). Use interpolação HTML apenas em conteúdo confiável e nunca em conteúdo fornecido pelo usuário
