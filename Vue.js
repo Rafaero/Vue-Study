@@ -394,3 +394,21 @@ Diagrama de Ciclo de Vida
 Abaixo está um diagrama para o ciclo de vida da instância. Você não precisa entender completamente tudo o que está acontecendo agora, mas conforme você aprende e constrói mais, será uma referência útil.
 
 Ganchos de ciclo de vida da instância
+
+Sintaxe de modelo
+Vue.js usa uma sintaxe de modelo baseada em HTML que permite vincular declarativamente o DOM renderizado aos dados da instância do componente subjacente. Todos os modelos Vue.js são HTML válidos que podem ser analisados ​​por navegadores compatíveis com as especificações e analisadores HTML.
+
+Sob o capô, o Vue compila os modelos em funções de renderização do Virtual DOM. Combinado com o sistema de reatividade, o Vue é capaz de descobrir de forma inteligente o número mínimo de componentes para renderizar novamente e aplicar a quantidade mínima de manipulações DOM quando o estado do aplicativo muda.
+
+Se você está familiarizado com os conceitos do Virtual DOM e prefere o poder bruto do JavaScript, também pode escrever funções de renderização diretamente em vez de modelos, com suporte JSX opcional.
+
+#Interpolações
+#Texto
+A forma mais básica de vinculação de dados é a interpolação de texto usando a sintaxe "Mustache" (chaves duplas):
+
+<span>Message: {{ msg }}</span>
+A tag do bigode será substituída pelo valor da msgpropriedade da instância do componente correspondente. Ele também será atualizado sempre que a msgpropriedade for alterada.
+
+Você também pode realizar interpolações únicas que não são atualizadas na mudança de dados usando a diretiva v-once , mas tenha em mente que isso também afetará quaisquer outras ligações no mesmo nó:
+
+<span v-once>This will never change: {{ msg }}</span>
