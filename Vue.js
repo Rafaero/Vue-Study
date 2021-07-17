@@ -322,3 +322,34 @@ Vue.createApp({})
   .directive('focus', FocusDirective)
   .use(LocalePlugin)
 Você pode navegar na API completa do aplicativo na referência da API .
+
+
+O Componente Raiz
+As opções passadas para createAppsão usadas para configurar o componente raiz . Esse componente é usado como ponto de partida para a renderização quando montamos o aplicativo.
+
+Um aplicativo precisa ser montado em um elemento DOM. Por exemplo, se quisermos montar um aplicativo Vue <div id="app"></div>, devemos passar #app:
+
+const RootComponent = {
+  /* options */
+}
+const app = Vue.createApp(RootComponent)
+const vm = app.mount('#app')
+Ao contrário da maioria dos métodos de aplicativo, mountnão retorna o aplicativo. Em vez disso, ele retorna a instância do componente raiz.
+
+Embora não seja estritamente associado ao padrão MVVM (abre uma nova janela), O design de Vue foi parcialmente inspirado por ele. Por convenção, costumamos usar a variável vm(abreviação de ViewModel) para nos referir a uma instância do componente.
+
+Embora todos os exemplos nesta página precisem apenas de um único componente, a maioria dos aplicativos reais são organizados em uma árvore de componentes aninhados e reutilizáveis. Por exemplo, a árvore de componentes de um aplicativo Todo pode ter a seguinte aparência:
+
+Root Component
+└─ TodoList
+   ├─ TodoItem
+   │  ├─ DeleteTodoButton
+   │  └─ EditTodoButton
+   └─ TodoListFooter
+      ├─ ClearTodosButton
+      └─ TodoListStatistics
+Cada componente terá sua própria instância de componente vm,. Para alguns componentes, como TodoItem, provavelmente haverá várias instâncias renderizadas a qualquer momento. Todas as instâncias do componente neste aplicativo compartilharão a mesma instância do aplicativo.
+
+Falaremos sobre o sistema de componentes em detalhes mais tarde. Por enquanto, apenas esteja ciente de que o componente raiz não é realmente diferente de qualquer outro componente. As opções de configuração são as mesmas, assim como o comportamento da instância do componente correspondente.
+
+#
