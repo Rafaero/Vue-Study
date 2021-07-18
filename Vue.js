@@ -464,3 +464,20 @@ Essas expressões serão avaliadas como JavaScript no escopo de dados da instân
 
 <!-- flow control won't work either, use ternary expressions -->
 {{ if (ok) { return message } }}
+
+Diretivas
+As diretivas são atributos especiais com o v-prefixo. Espera-se que os valores de atributo de diretiva sejam uma única expressão JavaScript (com exceção de v-fore v-on, que será discutido posteriormente). O trabalho de uma diretiva é aplicar reativamente efeitos colaterais ao DOM quando o valor de sua expressão muda. Vamos revisar o exemplo que vimos na introdução:
+
+<p v-if="seen">Now you see me</p>
+Aqui, a v-ifdiretiva removeria / inseriria o <p>elemento com base na veracidade do valor da expressão seen.
+
+#Argumentos
+Algumas diretivas podem receber um "argumento", denotado por dois pontos após o nome da diretiva. Por exemplo, a v-binddiretiva é usada para atualizar reativamente um atributo HTML:
+
+<a v-bind:href="url"> ... </a>
+Aqui hrefestá o argumento, que diz à v-binddiretiva para vincular o hrefatributo do elemento ao valor da expressão url.
+
+Outro exemplo é a v-ondiretiva, que escuta os eventos DOM:
+
+<a v-on:click="doSomething"> ... </a>
+Aqui, o argumento é o nome do evento a ser ouvido. Também falaremos sobre o tratamento de eventos com mais detalhes.
