@@ -533,3 +533,32 @@ Unless you have a "someattr" property in your instance, your code won't work.
 <a v-bind:[someAttr]="value"> ... </a>
 #Expressões JavaScript
 Expressões de modelo são colocadas em sandbox e só têm acesso a uma lista restrita de globais (abre uma nova janela)como Mathe Date. Você não deve tentar acessar globais definidos pelo usuário em expressões de modelo.
+
+Propriedades de Dados
+A dataopção de um componente é uma função. Vue chama essa função como parte da criação de uma nova instância de componente. Ele deve retornar um objeto, que o Vue irá envolver em seu sistema de reatividade e armazenar na instância do componente como $data. Por conveniência, quaisquer propriedades de nível superior desse objeto também são expostas diretamente por meio da instância do componente:
+
+const app = Vue.createApp({
+  data() {
+    return { count: 4 }
+  }
+})
+
+const vm = app.mount('#app')
+
+console.log(vm.$data.count) // => 4
+console.log(vm.count)       // => 4
+
+// Assigning a value to vm.count will also update $data.count
+vm.count = 5
+console.log(vm.$data.count) // => 5
+
+// ... and vice-versa
+vm.$data.count = 6
+console.log(vm.count) // => 6
+Essas propriedades de instância são adicionadas apenas quando a instância é criada pela primeira vez, portanto, você precisa garantir que todas estejam presentes no objeto retornado pela datafunção. Sempre que necessário, o uso null, undefinedou algum outro valor espaço reservado para propriedades onde o valor desejado ainda não está disponível.
+
+É possível adicionar uma nova propriedade diretamente à instância do componente sem incluí-la em data. No entanto, como essa propriedade não é apoiada pelo $dataobjeto reativo , ela não será rastreada automaticamente pelo sistema de reatividade do Vue .
+
+O Vue usa um $prefixo ao expor suas próprias APIs integradas por meio da instância do componente. Ele também reserva o prefixo _para propriedades internas. Você deve evitar usar nomes para datapropriedades de nível superior que começam com um desses caracteres.
+
+#
