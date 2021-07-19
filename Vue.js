@@ -481,3 +481,55 @@ Outro exemplo é a v-ondiretiva, que escuta os eventos DOM:
 
 <a v-on:click="doSomething"> ... </a>
 Aqui, o argumento é o nome do evento a ser ouvido. Também falaremos sobre o tratamento de eventos com mais detalhes.
+
+Modificadores
+Os modificadores são pós-correções especiais denotadas por um ponto, que indicam que uma diretiva deve ser vinculada de alguma forma especial. Por exemplo, o .preventmodificador diz à v-ondiretiva para chamar event.preventDefault()o evento disparado:
+
+<form v-on:submit.prevent="onSubmit">...</form>
+Você verá outros exemplos de modificadores posteriormente, parav-on e parav-model , quando explorarmos esses recursos.
+
+#Taquigrafia
+O v-prefixo serve como uma dica visual para identificar atributos específicos do Vue em seus modelos. Isso é útil quando você está usando o Vue.js para aplicar o comportamento dinâmico a alguma marcação existente, mas pode parecer prolixo para algumas diretivas usadas com frequência. Ao mesmo tempo, a necessidade do v-prefixo se torna menos importante quando você está construindo um SPA (abre uma nova janela), onde o Vue gerencia todos os modelos. Portanto, o Vue fornece atalhos especiais para duas das diretivas mais usadas v-binde v-on:
+
+#v-bind Forma abreviada
+<!-- full syntax -->
+<a v-bind:href="url"> ... </a>
+
+<!-- shorthand -->
+<a :href="url"> ... </a>
+
+<!-- shorthand with dynamic argument -->
+<a :[key]="url"> ... </a>
+#v-on Forma abreviada
+<!-- full syntax -->
+<a v-on:click="doSomething"> ... </a>
+
+<!-- shorthand -->
+<a @click="doSomething"> ... </a>
+
+<!-- shorthand with dynamic argument -->
+<a @[event]="doSomething"> ... </a>
+Eles podem parecer um pouco diferente de HTML normal, mas :e @são caracteres válidos para nomes de atributos e todos os navegadores Vue-suportados podem analisá-lo corretamente. Além disso, eles não aparecem na marcação final renderizada. A sintaxe abreviada é totalmente opcional, mas você provavelmente irá apreciá-la quando aprender mais sobre seu uso posteriormente.
+
+Da próxima página em diante, usaremos a abreviatura em nossos exemplos, pois é o uso mais comum para desenvolvedores Vue.
+
+#Ressalvas
+#Restrições de valor de argumento dinâmico
+Espera-se que os argumentos dinâmicos sejam avaliados como uma string, com exceção de null. O valor especial nullpode ser usado para remover explicitamente a ligação. Qualquer outro valor não string disparará um aviso.
+
+#Restrições de expressão de argumento dinâmico
+Expressões de argumento dinâmico têm algumas restrições de sintaxe porque certos caracteres, como espaços e aspas, são inválidos dentro de nomes de atributos HTML. Por exemplo, o seguinte é inválido:
+
+<!-- This will trigger a compiler warning. -->
+<a v-bind:['foo' + bar]="value"> ... </a>
+Recomendamos substituir quaisquer expressões complexas por uma propriedade computada , uma das peças mais fundamentais do Vue, que abordaremos em breve.
+
+Ao usar modelos in-DOM (modelos escritos diretamente em um arquivo HTML), você também deve evitar nomear chaves com caracteres maiúsculos, pois os navegadores irão forçar os nomes dos atributos para minúsculas:
+
+<!--
+This will be converted to v-bind:[someattr] in in-DOM templates.
+Unless you have a "someattr" property in your instance, your code won't work.
+-->
+<a v-bind:[someAttr]="value"> ... </a>
+#Expressões JavaScript
+Expressões de modelo são colocadas em sandbox e só têm acesso a uma lista restrita de globais (abre uma nova janela)como Mathe Date. Você não deve tentar acessar globais definidos pelo usuário em expressões de modelo.
