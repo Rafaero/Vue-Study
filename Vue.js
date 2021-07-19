@@ -599,3 +599,68 @@ Também é possível chamar um método diretamente de um modelo. Como veremos em
 Se os métodos toTitleDateou formatDateacessarem quaisquer dados reativos, eles serão rastreados como uma dependência de renderização, como se tivessem sido usados ​​diretamente no modelo.
 
 Os métodos chamados a partir de um modelo não devem ter efeitos colaterais, como alteração de dados ou acionamento de processos assíncronos. Se você se sentir tentado a fazer isso, provavelmente deveria usar um gancho de ciclo de vida .
+
+Propriedades Computadas
+Aprenda como as propriedades computadas funcionam com uma aula gratuita no Vue School
+As expressões no modelo são muito convenientes, mas são destinadas a operações simples. Colocar muita lógica em seus modelos pode torná-los inchados e difíceis de manter. Por exemplo, se tivermos um objeto com uma matriz aninhada:
+
+Vue.createApp({
+  data() {
+    return {
+      author: {
+        name: 'John Doe',
+        books: [
+          'Vue 2 - Advanced Guide',
+          'Vue 3 - Basic Guide',
+          'Vue 4 - The Mystery'
+        ]
+      }
+    }
+  }
+})
+E queremos mostrar mensagens diferentes dependendo se authorjá tem alguns livros ou não
+
+<div id="computed-basics">
+  <p>Has published books:</p>
+  <span>{{ author.books.length > 0 ? 'Yes' : 'No' }}</span>
+</div>
+Nesse ponto, o modelo não é mais simples e declarativo. Você tem que olhar para ele por um segundo antes de perceber que ele executa um cálculo dependendo de author.books. O problema fica pior quando você deseja incluir este cálculo em seu modelo mais de uma vez.
+
+É por isso que para lógica complexa que inclui dados reativos, você deve usar uma propriedade computada .
+
+#Exemplo Básico
+<div id="computed-basics">
+  <p>Has published books:</p>
+  <span>{{ publishedBooksMessage }}</span>
+</div>
+Vue.createApp({
+  data() {
+    return {
+      author: {
+        name: 'John Doe',
+        books: [
+          'Vue 2 - Advanced Guide',
+          'Vue 3 - Basic Guide',
+          'Vue 4 - The Mystery'
+        ]
+      }
+    }
+  },
+  computed: {
+    // a computed getter
+    publishedBooksMessage() {
+      // `this` points to the vm instance
+      return this.author.books.length > 0 ? 'Yes' : 'No'
+    }
+  }
+}).mount('#computed-basics')
+Resultado:
+
+
+Aqui, declaramos uma propriedade computada publishedBooksMessage.
+
+Tente alterar o valor de booksarray no aplicativo datae você verá como publishedBooksMessageestá mudando de acordo.
+
+Você pode vincular dados a propriedades computadas em modelos como uma propriedade normal. O Vue está ciente de que vm.publishedBooksMessagedepende de vm.author.books, portanto, ele atualizará quaisquer ligações que dependam de vm.publishedBooksMessagequando as vm.author.booksmudanças. E a melhor parte é que criamos essa relação de dependência declarativamente: a função getter calculada não tem efeitos colaterais, o que a torna mais fácil de testar e entender.
+
+#
