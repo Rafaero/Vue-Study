@@ -561,4 +561,41 @@ Essas propriedades de instância são adicionadas apenas quando a instância é 
 
 O Vue usa um $prefixo ao expor suas próprias APIs integradas por meio da instância do componente. Ele também reserva o prefixo _para propriedades internas. Você deve evitar usar nomes para datapropriedades de nível superior que começam com um desses caracteres.
 
-#
+
+Métodos
+Para adicionar métodos a uma instância do componente, usamos a methodsopção. Deve ser um objeto contendo os métodos desejados:
+
+const app = Vue.createApp({
+  data() {
+    return { count: 4 }
+  },
+  methods: {
+    increment() {
+      // `this` will refer to the component instance
+      this.count++
+    }
+  }
+})
+
+const vm = app.mount('#app')
+
+console.log(vm.count) // => 4
+
+vm.increment()
+
+console.log(vm.count) // => 5
+O Vue vincula automaticamente o thisvalor de methodspara que sempre se refira à instância do componente. Isso garante que um método retenha o thisvalor correto se for usado como um ouvinte de evento ou retorno de chamada. Você deve evitar o uso de funções de seta ao definir methods, pois isso impede que o Vue vincule o thisvalor apropriado .
+
+Assim como todas as outras propriedades da instância do componente, methodssão acessíveis a partir do modelo do componente. Dentro de um modelo, eles são mais comumente usados ​​como ouvintes de eventos:
+
+<button @click="increment">Up vote</button>
+No exemplo acima, o método incrementserá chamado quando o <button>for clicado.
+
+Também é possível chamar um método diretamente de um modelo. Como veremos em breve, geralmente é melhor usar uma propriedade computada . No entanto, usar um método pode ser útil em cenários onde as propriedades computadas não são uma opção viável. Você pode chamar um método em qualquer lugar em que um modelo suporte expressões JavaScript:
+
+<span :title="toTitleDate(date)">
+  {{ formatDate(date) }}
+</span>
+Se os métodos toTitleDateou formatDateacessarem quaisquer dados reativos, eles serão rastreados como uma dependência de renderização, como se tivessem sido usados ​​diretamente no modelo.
+
+Os métodos chamados a partir de um modelo não devem ter efeitos colaterais, como alteração de dados ou acionamento de processos assíncronos. Se você se sentir tentado a fazer isso, provavelmente deveria usar um gancho de ciclo de vida .
