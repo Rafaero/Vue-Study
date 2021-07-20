@@ -763,3 +763,54 @@ Nesse caso, o uso da watchopção permite realizar uma operação assíncrona (a
 
 Além da watchopção, você também pode usar a API vm. $ Watch imperativa .
 
+### **Propriedade Computada vs Assistida**
+
+O Vue fornece uma maneira mais genérica de observar e reagir às mudanças de dados em uma instância ativa atual: **propriedades de observação** . Quando você tem alguns dados que precisam ser alterados com base em alguns outros dados, é tentador usar em excesso `watch`- especialmente se você tiver experiência com AngularJS. No entanto, geralmente é uma ideia melhor usar uma propriedade computada em vez de um `watch`retorno de chamada obrigatório . Considere este exemplo:
+
+```
+<div id="demo">{{ fullName }}</div>
+```
+
+1
+
+```
+const vm = Vue.createApp({
+  data() {
+    return {
+      firstName: 'Foo',
+      lastName: 'Bar',
+      fullName: 'Foo Bar'
+    }
+  },
+  watch: {
+    firstName(val) {
+      this.fullName = val + ' ' + this.lastName
+    },
+    lastName(val) {
+      this.fullName = this.firstName + ' ' + val
+    }
+  }
+}).mount('#demo')
+
+```
+
+O código acima é imperativo e repetitivo. Compare-o com uma versão de propriedade computada:
+
+```
+const vm = Vue.createApp({
+  data() {
+    return {
+      firstName: 'Foo',
+      lastName: 'Bar'
+    }
+  },
+  computed: {
+    fullName() {
+      return this.firstName + ' ' + this.lastName
+    }
+  }
+}).mount('#demo')
+
+```
+
+Muito melhor, não é?
