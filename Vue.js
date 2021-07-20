@@ -663,4 +663,26 @@ Tente alterar o valor de booksarray no aplicativo datae você verá como publish
 
 Você pode vincular dados a propriedades computadas em modelos como uma propriedade normal. O Vue está ciente de que vm.publishedBooksMessagedepende de vm.author.books, portanto, ele atualizará quaisquer ligações que dependam de vm.publishedBooksMessagequando as vm.author.booksmudanças. E a melhor parte é que criamos essa relação de dependência declarativamente: a função getter calculada não tem efeitos colaterais, o que a torna mais fácil de testar e entender.
 
-#
+Cache Computado vs Métodos
+Você deve ter notado que podemos obter o mesmo resultado invocando um método na expressão:
+
+<p>{{ calculateBooksMessage() }}</p>
+// in component
+methods: {
+  calculateBooksMessage() {
+    return this.author.books.length > 0 ? 'Yes' : 'No'
+  }
+}
+Em vez de uma propriedade computada, podemos definir a mesma função como um método. Para o resultado final, as duas abordagens são exatamente as mesmas. No entanto, a diferença é que as propriedades calculadas são armazenadas em cache com base em suas dependências reativas. Uma propriedade computada será reavaliada apenas quando algumas de suas dependências reativas forem alteradas. Isso significa que, desde que author.booksnão tenha mudado, o acesso múltiplo à publishedBooksMessagepropriedade computada retornará imediatamente o resultado calculado anteriormente sem ter que executar a função novamente.
+
+Isso também significa que a seguinte propriedade computada nunca será atualizada, porque Date.now()não é uma dependência reativa:
+
+computed: {
+  now() {
+    return Date.now()
+  }
+}
+Em comparação, uma invocação de método sempre executará a função sempre que ocorrer uma nova renderização.
+
+Por que precisamos de cache? Imagine que temos uma propriedade computada cara list, que requer um loop em um grande array e muitos cálculos. Então, podemos ter outras propriedades computadas das quais, por sua vez, dependem list. Sem o cache, estaríamos executando listo getter de muito mais vezes do que o necessário! Nos casos em que você não deseja armazenar em cache, use um method.
+
