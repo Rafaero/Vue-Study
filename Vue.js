@@ -686,3 +686,80 @@ Em comparação, uma invocação de método sempre executará a função sempre 
 
 Por que precisamos de cache? Imagine que temos uma propriedade computada cara list, que requer um loop em um grande array e muitos cálculos. Então, podemos ter outras propriedades computadas das quais, por sua vez, dependem list. Sem o cache, estaríamos executando listo getter de muito mais vezes do que o necessário! Nos casos em que você não deseja armazenar em cache, use um method.
 
+
+Setter Computado
+As propriedades computadas são, por padrão, apenas getter, mas você também pode fornecer um setter quando precisar:
+
+// ...
+computed: {
+  fullName: {
+    // getter
+    get() {
+      return this.firstName + ' ' + this.lastName
+    },
+    // setter
+    set(newValue) {
+      const names = newValue.split(' ')
+      this.firstName = names[0]
+      this.lastName = names[names.length - 1]
+    }
+  }
+}
+// ...
+Agora, quando você executar vm.fullName = 'John Doe', o setter será invocado e vm.firstNamee vm.lastNameserá actualizado em conformidade.
+
+#Vigilantes
+Embora as propriedades calculadas sejam mais apropriadas na maioria dos casos, há momentos em que um inspetor personalizado é necessário. É por isso que o Vue fornece uma maneira mais genérica de reagir às alterações de dados por meio dessa watchopção. Isso é mais útil quando você deseja executar operações assíncronas ou caras em resposta à alteração de dados.
+
+Por exemplo:
+
+<div id="watch-example">
+  <p>
+    Ask a yes/no question:
+    <input v-model="question" />
+  </p>
+  <p>{{ answer }}</p>
+</div>
+<!-- Since there is already a rich ecosystem of ajax libraries    -->
+<!-- and collections of general-purpose utility methods, Vue core -->
+<!-- is able to remain small by not reinventing them. This also   -->
+<!-- gives you the freedom to use what you're familiar with.      -->
+<script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+<script>
+  const watchExampleVM = Vue.createApp({
+    data() {
+      return {
+        question: '',
+        answer: 'Questions usually contain a question mark. ;-)'
+      }
+    },
+    watch: {
+      // whenever question changes, this function will run
+      question(newQuestion, oldQuestion) {
+        if (newQuestion.indexOf('?') > -1) {
+          this.getAnswer()
+        }
+      }
+    },
+    methods: {
+      getAnswer() {
+        this.answer = 'Thinking...'
+        axios
+          .get('https://yesno.wtf/api')
+          .then(response => {
+            this.answer = response.data.answer
+          })
+          .catch(error => {
+            this.answer = 'Error! Could not reach the API. ' + error
+          })
+      }
+    }
+  }).mount('#watch-example')
+</script>
+Resultado:
+
+
+Nesse caso, o uso da watchopção permite realizar uma operação assíncrona (acesso a uma API) e define uma condição para realizar essa operação. Nada disso seria possível com uma propriedade computada.
+
+Além da watchopção, você também pode usar a API vm. $ Watch imperativa .
+
