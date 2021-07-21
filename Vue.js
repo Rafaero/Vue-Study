@@ -814,3 +814,83 @@ const vm = Vue.createApp({
 ```
 
 Muito melhor, não é?
+
+    Classes e ligações de estilo
+Uma necessidade comum de vinculação de dados é manipular a lista de classes de um elemento e seus estilos embutidos. Como ambos são atributos, podemos usá v-bind-los para manipulá-los: só precisamos calcular uma string final com nossas expressões. No entanto, interferir na concatenação de strings é irritante e sujeito a erros. Por esse motivo, o Vue oferece aprimoramentos especiais quando v-bindé usado com classe style. Além de strings, as expressões também podem ser avaliadas em objetos ou matrizes.
+
+#Vinculando classes HTML
+Assista a uma vídeo aula gratuita na Vue School
+#Sintaxe do objeto
+Podemos passar um objeto para :class(abreviação de v-bind:class) para alternar dinamicamente as classes:
+
+<div :class="{ active: isActive }"></div>
+A sintaxe acima significa que a presença da activeclasse será determinada pela veracidade (abre uma nova janela)da propriedade de dados isActive.
+
+Você pode ter várias classes alternadas, tendo mais campos no objeto. Além disso, a :classdiretiva também pode coexistir com o classatributo simples . Então, dado o seguinte modelo:
+
+<div
+  class="static"
+  :class="{ active: isActive, 'text-danger': hasError }"
+></div>
+E os seguintes dados:
+
+data() {
+  return {
+    isActive: true,
+    hasError: false
+  }
+}
+Ele irá renderizar:
+
+<div class="static active"></div>
+Quando isActiveou hasErrormuda, a lista de turmas será atualizada de acordo. Por exemplo, se se hasErrortornar true, a lista da classe se tornará "static active text-danger".
+
+O objeto vinculado não precisa estar embutido:
+
+<div :class="classObject"></div>
+data() {
+  return {
+    classObject: {
+      active: true,
+      'text-danger': false
+    }
+  }
+}
+Isso renderá o mesmo resultado. Também podemos ligar a uma propriedade computada que retorna um objeto. Este é um padrão comum e poderoso:
+
+<div :class="classObject"></div>
+data() {
+  return {
+    isActive: true,
+    error: null
+  }
+},
+computed: {
+  classObject() {
+    return {
+      active: this.isActive && !this.error,
+      'text-danger': this.error && this.error.type === 'fatal'
+    }
+  }
+}
+#Sintaxe de array
+Podemos passar um array para :classpara aplicar uma lista de classes:
+
+<div :class="[activeClass, errorClass]"></div>
+data() {
+  return {
+    activeClass: 'active',
+    errorClass: 'text-danger'
+  }
+}
+Que irá renderizar:
+
+<div class="active text-danger"></div>
+Se você também deseja alternar uma classe na lista condicionalmente, pode fazer isso com uma expressão ternária:
+
+<div :class="[isActive ? activeClass : '', errorClass]"></div>
+Isso sempre se aplica errorClass, mas activeClasssó será aplicado quando isActivefor verdade.
+
+No entanto, isso pode ser um pouco prolixo se você tiver várias classes condicionais. É por isso que também é possível usar a sintaxe do objeto dentro da sintaxe da matriz:
+
+<div :class="[{ active: isActive }, errorClass]"></div>
