@@ -894,3 +894,81 @@ Isso sempre se aplica errorClass, mas activeClasssó será aplicado quando isAct
 No entanto, isso pode ser um pouco prolixo se você tiver várias classes condicionais. É por isso que também é possível usar a sintaxe do objeto dentro da sintaxe da matriz:
 
 <div :class="[{ active: isActive }, errorClass]"></div>
+
+Com Componentes
+Esta seção pressupõe conhecimento dos componentes do Vue . Sinta-se à vontade para pular e voltar mais tarde.
+
+Quando você usa o classatributo em um componente personalizado com um único elemento raiz, essas classes são adicionadas a esse elemento. As classes existentes neste elemento não serão substituídas.
+
+Por exemplo, se você declarar este componente:
+
+const app = Vue.createApp({})
+
+app.component('my-component', {
+  template: `<p class="foo bar">Hi!</p>`
+})
+Em seguida, adicione algumas classes ao usá-lo:
+
+<div id="app">
+  <my-component class="baz boo"></my-component>
+</div>
+O HTML renderizado será:
+
+<p class="foo bar baz boo">Hi</p>
+O mesmo é verdadeiro para associações de classe:
+
+<my-component :class="{ active: isActive }"></my-component>
+Quando isActivefor verdade, o HTML renderizado será:
+
+<p class="foo bar active">Hi</p>
+Se o seu componente tiver vários elementos raiz, você precisará definir qual componente receberá essa classe. Você pode fazer isso usando a $attrspropriedade do componente:
+
+<div id="app">
+  <my-component class="baz"></my-component>
+</div>
+const app = Vue.createApp({})
+
+app.component('my-component', {
+  template: `
+    <p :class="$attrs.class">Hi!</p>
+    <span>This is a child component</span>
+  `
+})
+Você pode aprender mais sobre herança de atributo de componente na seção Atributos não prop .
+
+#Estilos embutidos de vinculação
+#Sintaxe do objeto
+A sintaxe do objeto para :styleé bastante direta - parece quase CSS, exceto que é um objeto JavaScript. Você pode usar camelCase ou kebab-case (use aspas com kebab-case) para os nomes de propriedade CSS:
+
+<div :style="{ color: activeColor, fontSize: fontSize + 'px' }"></div>
+data() {
+  return {
+    activeColor: 'red',
+    fontSize: 30
+  }
+}
+Muitas vezes, é uma boa ideia vincular a um objeto de estilo diretamente para que o modelo seja mais limpo:
+
+<div :style="styleObject"></div>
+data() {
+  return {
+    styleObject: {
+      color: 'red',
+      fontSize: '13px'
+    }
+  }
+}
+Novamente, a sintaxe do objeto é freqüentemente usada em conjunto com propriedades computadas que retornam objetos.
+
+#Sintaxe de array
+A sintaxe de array para :stylepermite que você aplique vários objetos de estilo ao mesmo elemento:
+
+<div :style="[baseStyles, overridingStyles]"></div>
+#Auto-prefixação
+Quando você usa uma propriedade CSS que requer um prefixo do fornecedor (abre uma nova janela)no :style, o Vue adicionará automaticamente o prefixo apropriado. O Vue faz isso verificando no tempo de execução quais propriedades de estilo são compatíveis com o navegador atual. Se o navegador não suportar uma propriedade específica, várias variantes prefixadas serão testadas para tentar encontrar uma que seja compatível.
+
+#Valores Múltiplos
+Você pode fornecer uma matriz de vários valores (prefixados) para uma propriedade de estilo, por exemplo:
+
+<div :style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }"></div>
+Isso renderizará apenas o último valor no array que o navegador suporta. Neste exemplo, ele renderizará display: flexpara navegadores que suportam a versão não prefixada do flexbox.
