@@ -972,3 +972,5 @@ Você pode fornecer uma matriz de vários valores (prefixados) para uma propried
 
 <div :style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }"></div>
 Isso renderizará apenas o último valor no array que o navegador suporta. Neste exemplo, ele renderizará display: flexpara navegadores que suportam a versão não prefixada do flexbox.
+
+.
