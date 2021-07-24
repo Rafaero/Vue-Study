@@ -1,4 +1,4 @@
-# **Instalação**
+# **Instalação**.
 
 O Vue.js foi desenvolvido para ser adotado de forma incremental. Isso significa que pode ser integrado em um projeto de várias maneiras, dependendo dos requisitos.
 
